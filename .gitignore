@@ -15,4 +15,3 @@ airflow-data/
 logs/*
 postgres-db-volume/
 plugins/*
-*.env
