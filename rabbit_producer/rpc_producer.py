@@ -15,7 +15,7 @@ CSV_FILES_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'csv_f
 
 PROD_NUM=os.environ.get('PROD_NUM')
 FILENAME=f"train_FD001.csv"
-TIME_SLEEP = 0
+TIME_SLEEP = 2
 
 HOST=os.environ.get('HOST')
 PORT=os.environ.get('PORT')

@@ -39,8 +39,8 @@ def example_dag():
 
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
         USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0], 'jsons')
-        AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_READ_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_READ_KEY')
+        AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
         session = boto3.session.Session()
         s3 = session.client(
