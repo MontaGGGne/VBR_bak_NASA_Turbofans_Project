@@ -5,16 +5,14 @@ import json
 import traceback
 
 from ml.model import load_autoencoder_model
-# from model import load_autoencoder_model
 
 
 model = None
 app = FastAPI()
 
-
 class AutoencoderModelResponse(BaseModel):
-    mse: float | str
-    rmse: float | str
+    test_data: List[Dict[str, Any]] | str = "None value"
+    predict: dict | str = "None value"
     error: str = "None error"
 
 
@@ -37,11 +35,11 @@ async def create_upload_json(request: Request):
     response_model = model(dict_from_json)
 
     response = AutoencoderModelResponse(
-        mse=response_model.mse,
-        rmse=response_model.rmse,
+        test_data=dict_from_json,
+        predict=response_model.dict_with_predict,
         error=response_model.error
     )
 
-    return {"mse": response.mse,
-            "rmse": response.rmse,
+    return {"input_data": response.test_data,
+            "predict": response.predict,
             "error": response.error}

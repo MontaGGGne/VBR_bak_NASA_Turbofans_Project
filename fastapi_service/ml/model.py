@@ -2,6 +2,7 @@ import traceback
 import logging
 import traceback
 import os
+import numpy as np
 from dataclasses import dataclass
 from typing import List, Dict, Any
 
@@ -23,14 +24,12 @@ VERSION_MODEL = os.environ.get('VERSION_MODEL')
 class AutoencoderModelPrediction:
     """Class representing a sentiment prediction result."""
 
-    mse: float | str = "None value"
-    rmse: float | str = "None value"
+    dict_with_predict: dict | str = "None value"
     error: str = "No Error"
 
 
 def load_autoencoder_model():
     """Load a pre-trained sentiment analysis model.
-
     Returns:
         model (function): A function that takes a text input and returns a SentimentPrediction object.
     """
@@ -52,20 +51,23 @@ def load_autoencoder_model():
 
         prep_class = PrepData()
 
+        units_list = []
+        for dict_unit in data_dict:
+            units_list.append(dict_unit['unit number'])
+        units_uniq_list = sorted(list(set(units_list)))
         try:
             numpy_from_data = prep_class.json_to_numpy(data_dict)
-            predict_data = model_class.start_predict_model(model_hf, numpy_from_data)
+            pipe_line_data = prep_class.employ_Pipline(numpy_from_data)
+            predict_data = model_class.start_predict_model(model_hf, pipe_line_data)
         except Exception:
             return AutoencoderModelPrediction(
                 error=f"ERROR: data_dict ({data_dict}) caused an error - {traceback.format_exc()}"
             )
-        
-
-        mse_rmse_res: Dict[str, Any] = model_class.start_active_validate(predict_data, numpy_from_data)
-
+        prep_res: np.array = model_class.get_class_from_object(model_hf, predict_data)
+        res_prep_dict = {}
+        for unit, res in zip(units_uniq_list, prep_res.flatten().tolist()):
+            res_prep_dict[unit] = bool(res)
         return AutoencoderModelPrediction(
-            mse=mse_rmse_res['MSE'],
-            rmse=mse_rmse_res['RMSE'],
+            dict_with_predict=res_prep_dict
         )
-
     return model

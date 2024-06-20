@@ -1,6 +1,6 @@
 FROM apache/airflow:2.9.1-python3.10
 
-COPY requirements.txt /requirements.txt
+COPY airflow_service/requirements.txt /requirements.txt
 COPY for_pip_install/* .
 
 RUN pip install --upgrade pip
