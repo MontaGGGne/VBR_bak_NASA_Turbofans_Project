@@ -27,8 +27,8 @@ default_args = {
 @dag(
     dag_id='dag_with_preparation_training_validation_models',
     default_args=default_args,
-    start_date=datetime(YESTURDEY.year, YESTURDEY.month, YESTURDEY.day), # datetime(2024, 6, 2), # datetime.today() - timedelta(days=1),
-    schedule_interval="@daily" # timedelta(days=1)
+    start_date=datetime(YESTURDEY.year, YESTURDEY.month, YESTURDEY.day),
+    schedule_interval="@daily"
     )
 def example_dag():
 
@@ -36,9 +36,9 @@ def example_dag():
     def get_jsons_from_s3_to_local(**kwargs):
         DATA_WINDOW = 3
         DATE_TIME_TEST = datetime(2024, 6, 4)
-
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
-        USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0], 'jsons')
+        USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0],
+                               'jsons')
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
@@ -178,8 +178,10 @@ def example_dag():
         str_cur_date_time = time.strftime('%Y-%m-%d_%H-%M-%S', loc_cur_date_time)
 
         autoencoder = Autoencoder_Model()
-
-        autoencoder.start_all_processes(path_Train_data, path_Train_data, path_Train_data, str_cur_date_time)
+        autoencoder.start_all_processes(path_Train_data,
+                                        path_Train_data,
+                                        path_Train_data,
+                                        str_cur_date_time)
 
     
     jsons_dir_path = get_jsons_from_s3_to_local()
