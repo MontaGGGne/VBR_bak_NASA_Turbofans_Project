@@ -10,7 +10,7 @@ USER root
 RUN apt-get update && apt-get install -y && apt-get clean
 
 COPY for_pip_install/* .
-COPY requirements.txt .
+# COPY requirements.txt .
 COPY rabbit_producer/* ./workspace/rabbit_producer/
 
-RUN pip install --upgrade pip && pip install ./rmq_custom_pack-0.0.1-py3-none-any.whl && pip install -r ./requirements.txt
+RUN pip install --upgrade pip && pip install ./rmq_custom_pack-0.0.1-py3-none-any.whl && pip install -r ./workspace/rabbit_producer/requirements.txt
