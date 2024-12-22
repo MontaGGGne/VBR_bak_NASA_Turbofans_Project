@@ -15,3 +15,4 @@ airflow-data/
 logs/*
 postgres-db-volume/
 plugins/*
+docker_hub_pass.txt

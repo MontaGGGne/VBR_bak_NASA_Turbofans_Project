@@ -34,5 +34,5 @@ jobs:
           docker compose build 
       - name: push to docker hub
         run: |
-          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          cat ~/docker_hub_pass.txt | docker login --username ${{ secrets.DOCKER_HUB_USER }} --password-stdin
           docker push ${{ secrets.DOCKER_HUB_USER }}/PSTE_service:latest
