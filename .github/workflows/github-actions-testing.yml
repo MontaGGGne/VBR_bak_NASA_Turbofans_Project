@@ -39,4 +39,5 @@ jobs:
       - name: push to docker hub
         run: |
           echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username ${{ secrets.DOCKER_HUB_USER }} --password-stdin
-          docker push ${{ secrets.DOCKER_HUB_USER }}/pste_service:latest
+          docker tag ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1 ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
