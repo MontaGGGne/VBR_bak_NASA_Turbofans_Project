@@ -24,6 +24,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install ./for_pip_install/rmq_custom_pack-0.0.1-py3-none-any.whl
       - name: test
         run: |
           pytest ./rabbit_producer/test_producer.py
