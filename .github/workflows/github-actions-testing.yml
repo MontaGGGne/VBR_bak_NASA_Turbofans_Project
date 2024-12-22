@@ -1,0 +1,37 @@
+name: Test|Build|Publish image to DH 
+on:
+  push:
+   branches:
+    - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [ "3.10" ]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: test
+        run: |
+          PYTHONPATH=./:./rabbit_producer/ pytest test
+          PYTHONPATH=./:./rabbit_consumer/ pytest test
+      - name: build image
+        run: |
+          docker compose build -t shchukinalexandr/PSTE_service:latest --no-cache 
+      - name: push to docker hub
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push ${{ secrets.DOCKER_HUB_USER }}/PSTE_service:latest

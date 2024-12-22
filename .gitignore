@@ -6,7 +6,7 @@
 *.venv
 *.log
 *.idea
-*.github
+# *.github
 *.vscode
 rabbitmq/*
 mnesia/
