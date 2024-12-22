@@ -1,0 +1,60 @@
+version: "3"
+
+
+services:
+
+  airflow:
+    container_name: airflow
+    image: ${DOCKER_HUB_USER}/extending_airflow:latest
+
+  rabbitmqServer:
+    container_name: rabbitmqServer
+    image: rabbitmq:3.10.7-management
+    hostname: "rabbitmqhost"
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+    depends_on:
+      - airflow
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq/log/:/var/log/rabbitmq/
+    ports:
+      - 5672:5672    #amqp
+      - 15672:15672  #http
+      - 15692:15692  #prometheus
+    healthcheck:
+      test: rabbitmq-diagnostics -q status && rabbitmq-diagnostics -q check_local_alarms
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  rmq_producer_1:
+    container_name: rmq_producer_1
+    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-rmq_producer_1:latest
+
+  rmq_producer_2:
+    container_name: rmq_producer_2
+    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-rmq_producer_2:latest
+
+  rmq_producer_3:
+    container_name: rmq_producer_3
+    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-rmq_producer_3:latest
+
+  rmq_consumer_1:
+    container_name: rmq_consumer_1
+    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-rmq_consumer_1:latest
+
+
+  rmq_consumer_2:
+    container_name: rmq_consumer_2
+    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-rmq_consumer_2:latest
+
+  fastapi:
+    container_name: fastapi
+    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-fastapi:latest
+
+volumes:
+  postgres-db-volume:

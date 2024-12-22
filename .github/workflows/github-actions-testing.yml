@@ -35,10 +35,25 @@ jobs:
           pytest ./rabbit_consumer/test_consumer.py
       - name: build image
         run: |
-          docker compose build
+          docker compose -f docker-compose-build.yml build
           docker images
       - name: push to docker hub
         run: |
           echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username ${{ secrets.DOCKER_HUB_USER }} --password-stdin
-          docker tag ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1 ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
-          docker push ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
+          docker tag vbr_bak_nasa_turbofans_project-fastapi ${{ secrets.DOCKER_HUB_USER }}/pste-service-fastapi:v1-release
+          docker tag vbr_bak_nasa_turbofans_project-rmq_producer_1 ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-1:v1-release
+          docker tag vbr_bak_nasa_turbofans_project-rmq_producer_2 ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-2:v1-release
+          docker tag vbr_bak_nasa_turbofans_project-rmq_producer_3 ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-3:v1-release
+          docker tag vbr_bak_nasa_turbofans_project-rmq_consumer_1 ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-1:v1-release
+          docker tag vbr_bak_nasa_turbofans_project-rmq_consumer_2 ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-2:v1-release
+          docker tag extending_airflow ${{ secrets.DOCKER_HUB_USER }}/pste-service-airflow:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-fastapi:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-1:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-2:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-3:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-1:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-2:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-2:v1-release
+
+# docker tag ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1 ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
+# docker push ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
