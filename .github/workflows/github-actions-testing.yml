@@ -25,6 +25,10 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install ./for_pip_install/rmq_custom_pack-0.0.1-py3-none-any.whl
+      - name: setup variables
+        run: |
+          TMPFILE=$(mktemp -p ~/dirname/ --prefix dh_pass_ --suffix .txt)
+          echo "${{ secrets.DOCKER_HUB_USER }}" > $TMPFILE
       - name: test
         run: |
           pytest ./rabbit_producer/test_producer.py
@@ -34,5 +38,5 @@ jobs:
           docker compose build 
       - name: push to docker hub
         run: |
-          cat ./docker_hub_pass.txt | docker login --username ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+          cat $TMPFILE | docker login --username ${{ secrets.DOCKER_HUB_USER }} --password-stdin
           docker push ${{ secrets.DOCKER_HUB_USER }}/PSTE_service:latest
