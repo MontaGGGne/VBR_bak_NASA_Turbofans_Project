@@ -35,7 +35,8 @@ jobs:
           pytest ./rabbit_consumer/test_consumer.py
       - name: build image
         run: |
-          docker compose build 
+          docker compose build
+          docker images
       - name: push to docker hub
         run: |
           echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username ${{ secrets.DOCKER_HUB_USER }} --password-stdin
