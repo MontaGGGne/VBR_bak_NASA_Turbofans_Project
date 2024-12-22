@@ -50,7 +50,7 @@ logging.info(f"""[EXCHANGE]: {EXCHANGE},
 
 def main():
     try:
-        # print('An instance of the class must be obtained')
+        print('An instance of the class must be obtained')
         logging.info('An instance of the class must be obtained')
         conn_num = 10
         while conn_num != 0:
@@ -71,19 +71,19 @@ def main():
                 continue
             except:
                 conn_num -= 1
-        # print('Received an instance of the class')
+        print('Received an instance of the class')
         logging.info('Received an instance of the class')
     except Exception as e:
-        # print(traceback.format_exc())
+        print(traceback.format_exc())
         logging.exception(e)
         logging.error(traceback.format_exc())
 
     try:
         consumer_handler_res = consumer.consumer_handler(BUCKET_ID, NEW_DIR_TIMEOUT, BEGIN_DATETIME)
-        # print(f"consumer_handler_res: {consumer_handler_res['basic_consume_res']}")
+        print(f"consumer_handler_res: {consumer_handler_res['basic_consume_res']}")
         logging.info(f"consumer_handler_res: {consumer_handler_res['basic_consume_res']}")
     except Exception as e:
-        # print(traceback.format_exc())
+        print(traceback.format_exc())
         logging.exception(e)
         logging.error(traceback.format_exc())
 

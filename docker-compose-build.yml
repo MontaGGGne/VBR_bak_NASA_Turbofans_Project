@@ -181,7 +181,6 @@ services:
       - rmq_consumer_2
     volumes:
       - ./rabbit_producer/:/workspace/rabbit_producer/
-
     healthcheck:
       interval: 10s
       timeout: 5s
