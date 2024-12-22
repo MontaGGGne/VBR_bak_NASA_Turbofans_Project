@@ -35,7 +35,7 @@ jobs:
           pytest ./rabbit_consumer/test_consumer.py
       - name: Build image
         run: |
-          docker image prune -y
+          docker image prune
           docker images
           docker compose -f docker-compose-build.yml build
           docker images
