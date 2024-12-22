@@ -27,7 +27,7 @@ jobs:
           pip install ./for_pip_install/rmq_custom_pack-0.0.1-py3-none-any.whl
       - name: setup variables
         run: |
-          TMPFILE=$(mktemp -p ~/dirname/ --prefix dh_pass_ --suffix .txt)
+          TMPFILE=$(tempfile --directory ~/dirname/ --prefix dh_pass_ --suffix .txt)
           echo "${{ secrets.DOCKER_HUB_USER }}" > $TMPFILE
       - name: test
         run: |
