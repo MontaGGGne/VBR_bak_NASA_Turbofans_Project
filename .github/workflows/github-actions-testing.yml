@@ -53,7 +53,7 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-producer-3:v1-release
           docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-1:v1-release
           docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-2:v1-release
-          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-rmq-consumer-2:v1-release
+          docker push ${{ secrets.DOCKER_HUB_USER }}/pste-service-airflow:v1-release
 
 # docker tag ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1 ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release
 # docker push ${{ secrets.DOCKER_HUB_USER }}/pste_service:v1-release

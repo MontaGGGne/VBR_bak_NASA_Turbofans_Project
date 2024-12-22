@@ -50,11 +50,11 @@ services:
 
   rmq_consumer_2:
     container_name: rmq_consumer_2
-    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-rmq_consumer_2:latest
+    image: ${DOCKER_HUB_USER}/pste-service-rmq-consumer-2:latest
 
   fastapi:
     container_name: fastapi
-    image: ${DOCKER_HUB_USER}/vbr_bak_nasa_turbofans_project-fastapi:latest
+    image: ${DOCKER_HUB_USER}/pste-service-fastapi:latest
 
 volumes:
   postgres-db-volume:
