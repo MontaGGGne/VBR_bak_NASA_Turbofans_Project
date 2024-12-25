@@ -52,3 +52,35 @@ services:
     volumes:
       - ./rabbit_consumer/:/workspace/rabbit_consumer/
     command: python3 /workspace/rabbit_consumer/rpc_consumer.py
+
+  # alertmanager:
+  #   container_name: alertmanager
+  #   image: prom/alertmanager:v0.25.0
+  #   ports:
+  #     - 9093:9093
+  #   volumes:
+  #     - ./config_files/alertmanager/config.yaml:/etc/alertmanager/config.yaml
+  #   command:
+  #     - '--config.file=/etc/alertmanager/config.yaml'
+  #     - '--storage.path=/alertmanager'
+  #     - '--web.external-url=${SERVER_ALERTMANAGER_ADDRESS:-http://localhost:9093}'
+  #   restart: always
+
+  # prometheus:
+  #   image: prom/prometheus
+  #   depends_on:
+  #     - airflow-webserver
+  #     - airflow-scheduler
+  #     - airflow-init
+  #     - rabbitmqServer
+  #     - rmq_consumer_1
+  #     - rmq_consumer_2
+  #     - rmq_producer_1
+  #     - rmq_producer_2
+  #     - rmq_producer_3
+  #   volumes:
+  #     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+  #   networks:
+  #     - localprom
+  #   ports:
+  #     - 9090:9090

@@ -251,7 +251,75 @@ services:
       - rmq_producer_1
       - rmq_producer_2
       - rmq_producer_3
+    ports:
+      - 80:80
     # restart: always
+
+  statsd-exporter:
+    image: prom/statsd-exporter:v0.24.0
+    container_name: statsd-exporter
+    volumes:
+      - ./config_files/statsd/statsd.yaml:/home/statsd-mapping-configs.yaml
+    entrypoint: ["/bin/sh", "-c", "--"]
+    command: ["statsd_exporter --statsd.listen-udp=:9125 --web.listen-address=:9102 --log.level debug --statsd.mapping-config=/home/statsd-mapping-configs.yaml"]
+    ports:
+      - 9102:9102
+      - 9125:9125
+    expose:
+      - 9125/udp
+    restart: always
+  
+  prometheus:
+    image: prom/prometheus:v2.37.9
+    container_name: prometheus
+    volumes:
+      - ./config_files/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.external-url=${SERVER_PROMETHEUS_ADDRESS:-http://localhost:9090}'
+    ports:
+      - 9090:9090
+    restart: always
+
+  grafana:
+    image: grafana/grafana:10.0.3-ubuntu
+    container_name: grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASS}
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config_files/grafana/etc/grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+      - ./config_files/grafana/etc/grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/
+      - ./config_files/grafana/var/lib/grafana/dashboards/:/var/lib/grafana/dashboards/
+      - ./config_files/grafana/var/lib/grafana/plugins/:/var/lib/grafana/plugins/
+
+  node-exporter:
+    image: prom/node-exporter:v1.6.1
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host
+    command: 
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    restart: always
 
 volumes:
   postgres-db-volume:
+  prometheus_data:
+  grafana_data:
