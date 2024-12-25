@@ -1,0 +1,1 @@
+Error loading config (--config.file=/etc/prometheus/prometheus.yaml)" file=/etc/prometheus/prometheus.yaml err="open /etc/prometheus/prometheus.yaml: no such file or directory"
