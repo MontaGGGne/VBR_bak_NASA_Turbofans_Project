@@ -256,7 +256,7 @@ services:
     # restart: always
 
   statsd-exporter:
-    image: prom/statsd-exporter:v0.24.0
+    image: prom/statsd-exporter:v0.25.0
     container_name: statsd-exporter
     volumes:
       - ./config_files/statsd/statsd.yaml:/home/statsd-mapping-configs.yaml
