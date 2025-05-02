@@ -60,8 +60,8 @@ services:
     command: version
     environment:
       <<: *airflow-common-env
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_READ_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_READ_KEY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS__KEY}
       DAGSHUB_USER: ${DAGSHUB_USER}
       DAGSHUB_PASS: ${DAGSHUB_USER}
       DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
@@ -187,8 +187,8 @@ services:
         condition: service_healthy
     environment:
       - PROD_NUM=1
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_WRITE_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_WRITE_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - BUCKET_ID=${BUCKET_ID}
       - HOST=${HOST}
       - PORT=${PORT}
