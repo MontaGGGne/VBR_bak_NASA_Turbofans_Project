@@ -42,6 +42,8 @@ def example_dag():
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
         BUCKET_ID = os.environ.get('BUCKET_ID')
+        print(BUCKET_ID)
+        logging.info(f"BUCKET_ID: {BUCKET_ID}")
         BASE_DATA_DIR = os.environ.get('BASE_DATA_DIR')
 
         session = boto3.session.Session()
