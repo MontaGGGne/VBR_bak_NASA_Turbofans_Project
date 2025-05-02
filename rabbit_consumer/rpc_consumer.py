@@ -15,24 +15,25 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 NEW_DIR_TIMEOUT = 30.0 # 6000.0
 BEGIN_DATETIME = '2024-07-01 00:00:00'
 
-KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
-SECRET_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
-BUCKET_ID=os.environ.get('BUCKET_ID')
+KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+SECRET_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+BUCKET_ID = os.environ.get('BUCKET_ID')
+BASE_DATA_DIR = os.environ.get('BASE_DATA_DIR')
 
-HOST=os.environ.get('HOST')
-PORT=int(os.environ.get('PORT'))
-USER=os.environ.get('USER')
-PASSWORD=os.environ.get('PASSWORD')
+HOST = os.environ.get('HOST')
+PORT = int(os.environ.get('PORT'))
+USER = os.environ.get('USER')
+PASSWORD = os.environ.get('PASSWORD')
 
 # print(f"[HOST]: {HOST}, [PORT]: {PORT}, [USER]: {USER}, [PASSWORD]: {PASSWORD}")
 logging.info(f"[HOST]: {HOST}, [PORT]: {PORT}, [USER]: {USER}, [PASSWORD]: {PASSWORD}")
 
-EXCHANGE=os.environ.get('EXCHANGE')
-EXCHANGE_TYPE=os.environ.get('EXCHANGE_TYPE')
-QUEUE_REQUEST=os.environ.get('QUEUE_REQUEST')
-QUEUE_RESPONSE=os.environ.get('QUEUE_RESPONSE')
-ROUTING_KEY_REQUEST=os.environ.get('ROUTING_KEY_REQUEST')
-ROUTING_KEY_RESPONSE=os.environ.get('ROUTING_KEY_RESPONSE')
+EXCHANGE = os.environ.get('EXCHANGE')
+EXCHANGE_TYPE = os.environ.get('EXCHANGE_TYPE')
+QUEUE_REQUEST = os.environ.get('QUEUE_REQUEST')
+QUEUE_RESPONSE = os.environ.get('QUEUE_RESPONSE')
+ROUTING_KEY_REQUEST = os.environ.get('ROUTING_KEY_REQUEST')
+ROUTING_KEY_RESPONSE = os.environ.get('ROUTING_KEY_RESPONSE')
 
 # print(f"""[EXCHANGE]: {EXCHANGE}, 
 #              [EXCHANGE_TYPE]: {EXCHANGE_TYPE}, 
@@ -79,7 +80,7 @@ def main():
         logging.error(traceback.format_exc())
 
     try:
-        consumer_handler_res = consumer.consumer_handler(BUCKET_ID, NEW_DIR_TIMEOUT, BEGIN_DATETIME)
+        consumer_handler_res = consumer.consumer_handler(BUCKET_ID, BASE_DATA_DIR, NEW_DIR_TIMEOUT, BEGIN_DATETIME)
         print(f"consumer_handler_res: {consumer_handler_res['basic_consume_res']}")
         logging.info(f"consumer_handler_res: {consumer_handler_res['basic_consume_res']}")
     except Exception as e:

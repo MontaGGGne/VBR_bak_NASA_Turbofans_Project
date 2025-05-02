@@ -41,6 +41,8 @@ def example_dag():
                                'jsons')
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+        BUCKET_ID = os.environ.get('BUCKET_ID')
+        BASE_DATA_DIR = os.environ.get('BASE_DATA_DIR')
 
         session = boto3.session.Session()
         s3 = session.client(
@@ -82,9 +84,9 @@ def example_dag():
 
         create_date_dir: str = ''
         for index, date_id in enumerate(last_time_window[::-1]):
-            date_prefix = f"units/{date_id}/"
+            date_prefix = f"{BASE_DATA_DIR}/{date_id}/"
             try:
-                s3_obj = s3.list_objects_v2(Bucket='nasa-turbofans', Prefix=date_prefix, Delimiter = "/", MaxKeys=1000)
+                s3_obj = s3.list_objects_v2(Bucket=BUCKET_ID, Prefix=date_prefix, Delimiter = "/", MaxKeys=1000)
             except Exception as e:
                 logging.error(traceback.format_exc())
                 raise
@@ -118,14 +120,14 @@ def example_dag():
                 raise
 
             try:
-                get_all_one_unit_jsons = s3.list_objects_v2(Bucket='nasa-turbofans', Prefix=unit_prefix['Prefix'], Delimiter = "/", MaxKeys=1000)
+                get_all_one_unit_jsons = s3.list_objects_v2(Bucket=BUCKET_ID, Prefix=unit_prefix['Prefix'], Delimiter = "/", MaxKeys=1000)
             except Exception as e:
                 logging.error(f"ERROR: all_one_unit_jsons - {traceback.format_exc()}")
                 raise
             if 'Contents' in get_all_one_unit_jsons:
                 for unit_json in get_all_one_unit_jsons['Contents']:
                     try:
-                        get_json_response = s3.get_object(Bucket='nasa-turbofans', Key=unit_json['Key'])
+                        get_json_response = s3.get_object(Bucket=BUCKET_ID, Key=unit_json['Key'])
                     except Exception as e:
                         logging.error(f"ERROR: get_json_response - {traceback.format_exc()}")
                         raise
