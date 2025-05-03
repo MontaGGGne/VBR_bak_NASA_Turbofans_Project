@@ -54,6 +54,15 @@ services:
     <<: *airflow-common
     command: scheduler
     restart: always
+    environment:
+      <<: *airflow-common-env
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      BUCKET_ID: ${BUCKET_ID}
+      BASE_DATA_DIR: ${BASE_DATA_DIR}
+      DAGSHUB_USER: ${DAGSHUB_USER}
+      DAGSHUB_PASS: ${DAGSHUB_USER}
+      DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
 
   airflow-init:
     <<: *airflow-common
