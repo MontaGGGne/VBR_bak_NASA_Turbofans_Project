@@ -44,11 +44,11 @@ def example_dag():
         load_dotenv()
 
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-        print(BUCKET_ID)
+        print(AWS_ACCESS_KEY_ID)
         logging.info(f"AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}")
 
         AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-        print(BUCKET_ID)
+        print(AWS_SECRET_ACCESS_KEY)
         logging.info(f"AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}")
 
         BUCKET_ID = os.environ.get('BUCKET_ID')
@@ -56,7 +56,7 @@ def example_dag():
         logging.info(f"BUCKET_ID: {BUCKET_ID}")
 
         BASE_DATA_DIR = os.environ.get('BASE_DATA_DIR')
-        print(BUCKET_ID)
+        print(BASE_DATA_DIR)
         logging.info(f"BASE_DATA_DIR: {BASE_DATA_DIR}")
 
         session = boto3.session.Session()
