@@ -11,6 +11,7 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import date
 from typing import Dict
+from dotenv import load_dotenv
 
 from prepData.prepData import PrepData
 from train.train import Autoencoder_Model
@@ -39,6 +40,7 @@ def example_dag():
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
         USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0],
                                'jsons')
+        load_dotenv()
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
         BUCKET_ID = os.environ.get('BUCKET_ID')
