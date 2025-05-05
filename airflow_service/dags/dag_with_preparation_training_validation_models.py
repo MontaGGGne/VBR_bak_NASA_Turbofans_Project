@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 from prepData.prepData import PrepData
 from train.train import Autoencoder_Model
 
+load_dotenv()
 YESTURDEY = date.today() - timedelta(days=1)
 
 
@@ -40,8 +41,6 @@ def example_dag():
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
         USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0],
                                'jsons')
-
-        load_dotenv()
 
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
         print(AWS_ACCESS_KEY_ID)
@@ -157,6 +156,7 @@ def example_dag():
 
     @task(multiple_outputs=True, task_id="organization_of_preprocessing_data")
     def preprocess_data(date_dir_path) -> Dict[str, str]:
+        
         current_dir = os.path.dirname(os.path.realpath(__file__))
 
         processed_path_dir = os.path.join(os.path.split(current_dir)[0], 'processed')
@@ -174,7 +174,7 @@ def example_dag():
             logging.error(F"ERROR: final_path_dir - {traceback.format_exc()}")
             raise
         try:
-            PrepData.start_prepData(path_raw=date_dir_path,
+            PrepData.start_prepData_json(path_raw=date_dir_path,
                                     path_processed=processed_path_dir,
                                     path_final=final_path_dir )
         except Exception as e:
@@ -184,6 +184,10 @@ def example_dag():
     
     @task(task_id="train_and_valid_data")
     def train_and_vaild_data(data_dirs, **kwargs):
+
+        DAGSHUB_TOKEN = os.environ.get('DAGSHUB_TOKEN')
+        print(DAGSHUB_TOKEN)
+        logging.info(f"DAGSHUB_TOKEN: {DAGSHUB_TOKEN}")
 
         processed_path_dir = str(data_dirs["processed_path_dir"])
         final_path_dir = str(data_dirs["final_path_dir"])
@@ -195,16 +199,17 @@ def example_dag():
         str_cur_date_time = time.strftime('%Y-%m-%d_%H-%M-%S', loc_cur_date_time)
 
         autoencoder = Autoencoder_Model()
-        autoencoder.start_all_processes(path_Train_data,
-                                        path_Train_data,
-                                        path_Train_data,
-                                        str_cur_date_time)
+        model = autoencoder.start_train_and_save_mlflow(path_Train_data=path_Train_data,
+                                                path_Valid_Data=path_Train_data,
+                                                path_Predict_Data=path_Train_data,
+                                                name_experiment=str_cur_date_time,
+                                                mlfl_tr_username=DAGSHUB_TOKEN)
 
     
     jsons_dir_path = get_jsons_from_s3_to_local()
 
     preprocess_data_dirs = preprocess_data(jsons_dir_path)
     
-    rmse_metric = train_and_vaild_data(preprocess_data_dirs)
+    model = train_and_vaild_data(preprocess_data_dirs)
 
 greet_dag = example_dag()
