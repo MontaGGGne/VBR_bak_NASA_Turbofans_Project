@@ -157,6 +157,12 @@ def example_dag():
     @task(multiple_outputs=True, task_id="organization_of_preprocessing_data")
     def preprocess_data(date_dir_path) -> Dict[str, str]:
         
+        print(f"date_dir_path list - {os.listdir(date_dir_path)}")
+        logging.info(f"date_dir_path list - {os.listdir(date_dir_path)}")
+        
+        print(f"date_dir_path list - {os.listdir(date_dir_path.strip('/'))}")
+        logging.info(f"date_dir_path list - {os.listdir(date_dir_path.strip('/'))}")
+        
         current_dir = os.path.dirname(os.path.realpath(__file__))
 
         processed_path_dir = os.path.join(os.path.split(current_dir)[0], 'processed')
