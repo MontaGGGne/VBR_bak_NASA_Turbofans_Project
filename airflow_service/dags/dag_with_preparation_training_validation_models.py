@@ -174,11 +174,17 @@ def example_dag():
             logging.error(F"ERROR: final_path_dir - {traceback.format_exc()}")
             raise
         try:
+            logging.info(f"date_dir_path - {date_dir_path}")
+            print(f"date_dir_path - {date_dir_path}")
+            logging.info(f"processed_path_dir - {processed_path_dir}")
+            print(f"processed_path_dir - {processed_path_dir}")
+            logging.info(f"final_path_dir - {final_path_dir}")
+            print(f"final_path_dir - {final_path_dir}")
             PrepData.start_prepData_json(path_raw=date_dir_path,
                                     path_processed=processed_path_dir,
                                     path_final=final_path_dir )
         except Exception as e:
-            logging.error(F"ERROR: res - PrepData.start_prepData - {traceback.format_exc()}")
+            logging.error(F"ERROR: res - PrepData.start_prepData_json - {traceback.format_exc()}")
             raise 
         return {"processed_path_dir": processed_path_dir, "final_path_dir": final_path_dir}
     
