@@ -129,7 +129,7 @@ def example_dag():
             print(f"ERROR: make date_dir_path repr(e) - {repr(e)}")
             raise
 
-        logging.error(f"all_units_prefixes - {all_units_prefixes}")
+        logging.info(f"all_units_prefixes - {all_units_prefixes}")
         print(f"all_units_prefixes - {all_units_prefixes}")
 
         for unit_prefix in all_units_prefixes:
