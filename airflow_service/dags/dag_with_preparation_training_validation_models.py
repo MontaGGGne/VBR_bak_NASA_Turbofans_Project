@@ -37,7 +37,7 @@ def example_dag():
     @task(task_id="put_jsons_from_s3_to_local")
     def get_jsons_from_s3_to_local(**kwargs):
         DATA_WINDOW = 3
-        DATE_TIME_TEST = datetime(2024, 6, 4)
+        DATE_TIME_TEST = datetime(2025, 5, 6)
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
         USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0],
                                'jsons')
