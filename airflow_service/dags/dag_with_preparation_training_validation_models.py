@@ -37,7 +37,7 @@ def example_dag():
     @task(task_id="put_jsons_from_s3_to_local")
     def get_jsons_from_s3_to_local(**kwargs):
         DATA_WINDOW = 3
-        DATE_TIME_TEST = datetime(2025, 5, 6)
+        DATE_TIME_TEST = datetime(2024, 7, 4) # 2024-07-04
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
         USE_DIR = os.path.join(os.path.split(CURRENT_DIR)[0],
                                'jsons')
@@ -101,12 +101,17 @@ def example_dag():
             date_prefix = f"{BASE_DATA_DIR}/{date_id}/"
             try:
                 s3_obj = s3.list_objects_v2(Bucket=BUCKET_ID, Prefix=date_prefix, Delimiter = "/", MaxKeys=1000)
+                print(f"s3_obj - {s3_obj}")
             except Exception as e:
                 logging.error(traceback.format_exc())
+                print(f"ERROR get s3_obj - {repr(e)}")
                 raise
             if 'CommonPrefixes' not in s3_obj:
                 continue  
             else:
+                logging.info(f"s3_obj['CommonPrefixes'] - {s3_obj['CommonPrefixes']}")
+                print(f"s3_obj['CommonPrefixes'] - {s3_obj['CommonPrefixes']}")
+
                 all_units_prefixes.extend(s3_obj['CommonPrefixes'])
                 only_date = date_id.split(' ')[0]
                 if index == len(last_time_window) - 1:
@@ -120,7 +125,12 @@ def example_dag():
                 os.mkdir(date_dir_path)
         except Exception as e:
             logging.error(f"ERROR: make date_dir_path - {traceback.format_exc()}")
+            print(f"ERROR: make date_dir_path - {traceback.format_exc()}")
+            print(f"ERROR: make date_dir_path repr(e) - {repr(e)}")
             raise
+
+        logging.error(f"all_units_prefixes - {all_units_prefixes}")
+        print(f"all_units_prefixes - {all_units_prefixes}")
 
         for unit_prefix in all_units_prefixes:
             current_unit = os.path.split(unit_prefix['Prefix'].rstrip('/'))[-1]
@@ -135,6 +145,9 @@ def example_dag():
 
             try:
                 get_all_one_unit_jsons = s3.list_objects_v2(Bucket=BUCKET_ID, Prefix=unit_prefix['Prefix'], Delimiter = "/", MaxKeys=1000)
+                
+                logging.info(f"get_all_one_unit_jsons - {get_all_one_unit_jsons}")
+                print(f"get_all_one_unit_jsons - {get_all_one_unit_jsons}")
             except Exception as e:
                 logging.error(f"ERROR: all_one_unit_jsons - {traceback.format_exc()}")
                 raise
@@ -151,6 +164,9 @@ def example_dag():
                     json_obj = json.loads(get_json_response['Body'].read())
                     with open(json_dir, 'w') as json_write:
                         json_obj = json.dump(json_obj, json_write)
+            else:
+                logging.info(f"get_all_one_unit_jsons - No Contents")
+                print(f"get_all_one_unit_jsons - No Contents")
         logging.info(f"Path to date dir with units: {date_dir_path}")
         return date_dir_path
 
@@ -159,9 +175,6 @@ def example_dag():
         
         print(f"date_dir_path list - {os.listdir(date_dir_path)}")
         logging.info(f"date_dir_path list - {os.listdir(date_dir_path)}")
-        
-        print(f"date_dir_path list - {os.listdir(date_dir_path.strip('/'))}")
-        logging.info(f"date_dir_path list - {os.listdir(date_dir_path.strip('/'))}")
         
         current_dir = os.path.dirname(os.path.realpath(__file__))
 
