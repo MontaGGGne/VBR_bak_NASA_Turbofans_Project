@@ -201,7 +201,7 @@ def example_dag():
             print(f"final_path_dir - {final_path_dir}")
             PrepData.start_prepData_json(path_raw=date_dir_path,
                                     path_processed=processed_path_dir,
-                                    path_final=final_path_dir )
+                                    path_final=final_path_dir)
         except Exception as e:
             logging.error(F"ERROR: res - PrepData.start_prepData_json - {traceback.format_exc()}")
             raise 
