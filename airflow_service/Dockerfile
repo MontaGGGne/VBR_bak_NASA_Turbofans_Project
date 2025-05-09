@@ -10,7 +10,7 @@ RUN pip uninstall tensorflow
 RUN pip cache purge
 
 RUN pip install ./train_and_valid_model-0.2.15-py3-none-any.whl
-RUN pip install ./preprocess_data-0.1.13-py3-none-any.whl
+RUN pip install ./preprocess_data-0.1.14-py3-none-any.whl
 
 RUN pip install -r /requirements.txt
 
