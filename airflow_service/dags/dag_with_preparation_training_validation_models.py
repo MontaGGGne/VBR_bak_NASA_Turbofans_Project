@@ -192,6 +192,7 @@ def example_dag():
         except Exception as e:
             logging.error(F"ERROR: final_path_dir - {traceback.format_exc()}")
             raise
+        #
         try:
             logging.info(f"date_dir_path - {date_dir_path}")
             print(f"date_dir_path - {date_dir_path}")
@@ -217,7 +218,9 @@ def example_dag():
         processed_path_dir = str(data_dirs["processed_path_dir"])
         final_path_dir = str(data_dirs["final_path_dir"])
 
-        path_Train_data = os.path.join(final_path_dir, "Train_Normal.csv")
+        path_Train_data = os.path.join(final_path_dir, "train_and_test", "train.csv")
+        path_Test_data = os.path.join(final_path_dir, "train_and_test", "test.csv")
+        path_Predict_data = os.path.join(final_path_dir, "static_valid", "Static_validation_Normal.csv")
 
         cur_date_time = time.time()
         loc_cur_date_time = time.localtime(cur_date_time)
@@ -225,8 +228,8 @@ def example_dag():
 
         autoencoder = Autoencoder_Model()
         model = autoencoder.start_train_and_save_mlflow(path_Train_data=path_Train_data,
-                                                path_Valid_Data=path_Train_data,
-                                                path_Predict_Data=path_Train_data,
+                                                path_Valid_Data=path_Test_data,
+                                                path_Predict_Data= path_Predict_data,
                                                 name_experiment=str_cur_date_time,
                                                 mlfl_tr_username=DAGSHUB_TOKEN)
 
