@@ -3,6 +3,9 @@ version: "3"
 x-airflow-common:
   &airflow-common
   image: ${DOCKER_HUB_USER}/pste-service-airflow:v1-release
+  command: >
+      sh -c "export MLFLOW_TRACKING_USERNAME=${DAGSHUB_USER} &&
+             export MLFLOW_TRACKING_PASSWORD=${DAGSHUB_PASSWORD}"
   environment:
     &airflow-common-env
     DAGSHUB_USER: ${DAGSHUB_USER}
@@ -69,7 +72,10 @@ services:
 
   airflow-init:
     <<: *airflow-common
-    command: version
+    command: >
+      sh -c "version &&
+             export MLFLOW_TRACKING_USERNAME=${DAGSHUB_USER} &&
+             export MLFLOW_TRACKING_PASSWORD=${DAGSHUB_PASSWORD}"
     environment:
       <<: *airflow-common-env
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
