@@ -3,13 +3,13 @@ version: "3"
 x-airflow-common:
   &airflow-common
   build:
-      context: .
-      dockerfile: ./airflow_service/Dockerfile
+    args:
+      - DAGSHUB_USER=${DAGSHUB_USER}
+      - DAGSHUB_PASSWORD=${DAGSHUB_PASSWORD}
+      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
+    context: .
+    dockerfile: ./airflow_service/Dockerfile
   image: ${AIRFLOW_IMAGE_NAME:-extending_airflow:latest}
-  args:
-    - DAGSHUB_USER=${DAGSHUB_USER}
-    - DAGSHUB_PASSWORD=${DAGSHUB_PASSWORD}
-    - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
   environment:
     &airflow-common-env
     DAGSHUB_USER: ${DAGSHUB_USER}
@@ -38,10 +38,6 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
-    args:
-      - DAGSHUB_USER=${DAGSHUB_USER}
-      - DAGSHUB_PASSWORD=${DAGSHUB_PASSWORD}
-      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
     environment:
       <<: *airflow-common-env
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
