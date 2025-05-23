@@ -37,7 +37,10 @@ services:
 
   airflow-scheduler:
     <<: *airflow-common
-    command: scheduler
+    command: >
+      sh -c "scheduler &&
+             export MLFLOW_TRACKING_USERNAME=${DAGSHUB_USER} &&
+             export MLFLOW_TRACKING_PASSWORD=${DAGSHUB_PASSWORD}"
     environment:
       <<: *airflow-common-env
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
@@ -50,7 +53,10 @@ services:
 
   airflow-init:
     <<: *airflow-common
-    command: version
+    command: >
+      sh -c "version &&
+             export MLFLOW_TRACKING_USERNAME=${DAGSHUB_USER} &&
+             export MLFLOW_TRACKING_PASSWORD=${DAGSHUB_PASSWORD}"
     environment:
       <<: *airflow-common-env
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
