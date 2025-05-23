@@ -5,6 +5,9 @@ x-airflow-common:
   image: ${DOCKER_HUB_USER}/pste-service-airflow:v1-release
   environment:
     &airflow-common-env
+    DAGSHUB_USER: ${DAGSHUB_USER}
+    DAGSHUB_PASS: ${DAGSHUB_PASSWORD}
+    DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__FERNET_KEY: ''

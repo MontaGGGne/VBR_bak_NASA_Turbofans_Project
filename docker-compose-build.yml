@@ -6,14 +6,17 @@ x-airflow-common:
       context: .
       dockerfile: ./airflow_service/Dockerfile
   image: ${AIRFLOW_IMAGE_NAME:-extending_airflow:latest}
-  environment:
-    &airflow-common-env
-    AIRFLOW__CORE__EXECUTOR: LocalExecutor
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CORE__FERNET_KEY: ''
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-    AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 10
+  # environment:
+  #   &airflow-common-env
+  #   DAGSHUB_USER: ${DAGSHUB_USER}
+  #   DAGSHUB_PASS: ${DAGSHUB_PASSWORD}
+  #   DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
+  #   AIRFLOW__CORE__EXECUTOR: LocalExecutor
+  #   AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+  #   AIRFLOW__CORE__FERNET_KEY: ''
+  #   AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+  #   AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+  #   AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 10
   volumes:
     - ./airflow_service/dags:/opt/airflow/dags
     - ./airflow_service/logs:/opt/airflow/logs
@@ -31,32 +34,32 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
-    environment:
-      <<: *airflow-common-env
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      BUCKET_ID: ${BUCKET_ID}
-      BASE_DATA_DIR: ${BASE_DATA_DIR}
-      DAGSHUB_USER: ${DAGSHUB_USER}
-      DAGSHUB_PASS: ${DAGSHUB_PASSWORD}
-      DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
+    # environment:
+    #   <<: *airflow-common-env
+    #   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    #   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    #   BUCKET_ID: ${BUCKET_ID}
+    #   BASE_DATA_DIR: ${BASE_DATA_DIR}
+    #   DAGSHUB_USER: ${DAGSHUB_USER}
+    #   DAGSHUB_PASS: ${DAGSHUB_PASSWORD}
+    #   DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
 
   airflow-init:
     <<: *airflow-common
     command: version
-    environment:
-      <<: *airflow-common-env
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      BUCKET_ID: ${BUCKET_ID}
-      BASE_DATA_DIR: ${BASE_DATA_DIR}
-      DAGSHUB_USER: ${DAGSHUB_USER}
-      DAGSHUB_PASS: ${DAGSHUB_PASSWORD}
-      DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
-      _AIRFLOW_DB_UPGRADE: 'true'
-      _AIRFLOW_WWW_USER_CREATE: 'true'
-      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
-      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+    # environment:
+    #   <<: *airflow-common-env
+    #   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    #   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    #   BUCKET_ID: ${BUCKET_ID}
+    #   BASE_DATA_DIR: ${BASE_DATA_DIR}
+    #   DAGSHUB_USER: ${DAGSHUB_USER}
+    #   DAGSHUB_PASS: ${DAGSHUB_PASSWORD}
+    #   DAGSHUB_TOKEN: ${DAGSHUB_TOKEN}
+    #   _AIRFLOW_DB_UPGRADE: 'true'
+    #   _AIRFLOW_WWW_USER_CREATE: 'true'
+    #   _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+    #   _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
 
   rmq_producer_1:
     tty: true
