@@ -55,10 +55,6 @@ services:
   airflow-init:
     <<: *airflow-common
     command: version
-    args:
-      - DAGSHUB_USER=${DAGSHUB_USER}
-      - DAGSHUB_PASSWORD=${DAGSHUB_PASSWORD}
-      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
     environment:
       <<: *airflow-common-env
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
