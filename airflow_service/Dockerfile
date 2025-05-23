@@ -14,4 +14,7 @@ RUN pip install ./preprocess_data-0.1.16-py3-none-any.whl
 
 RUN pip install -r /requirements.txt
 
+RUN export MLFLOW_TRACKING_USERNAME=$DAGSHUB_USER
+RUN export MLFLOW_TRACKING_PASSWORD=$DAGSHUB_PASS
+
 
